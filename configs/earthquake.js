@@ -1,5 +1,7 @@
 const _ = require('lodash');
 
+const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'];
+
 exports.config = {
   rest: {
     contextFilename: './context/earthquakeContext.json',
@@ -41,7 +43,11 @@ exports.config = {
     };
     doc.magnitude = doc.properties.mag;
     doc.place = doc.properties.place;
-    doc.time = (new Date(doc.properties.time)).toISOString();
+    const date = new Date(doc.properties.time);
+    doc.dayOfWeek = DAYS_OF_WEEK[date.getUTCDay()];
+    doc.hourOfDay_str = "" + date.getUTCHours();
+    doc.hourOfDay_num = date.getUTCHours();
+    doc.time = date.toISOString();
     doc.updated = (new Date(doc.properties.updated)).toISOString();
     doc.url = doc.properties.url;
     doc.significance = doc.properties.sig;
